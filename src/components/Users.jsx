@@ -5,6 +5,7 @@ import User from "./User";
 import UserTodos from "./UserTodos";
 import { Button, Modal } from "react-bootstrap";
 import { axiosClient } from "../api";
+import ModelComponent from "./ModelComponent";
 
 export default class Users extends Component {
   constructor(props) {
@@ -36,7 +37,40 @@ export default class Users extends Component {
   };
 
   // add new user
-  createUser = () => {
+  // createUser = () => {
+  //   axiosClient
+  //     .post("/users", this.state.newUser)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       this.getUsers();
+  //       this.setState({ ...this.state, show: false });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+  handleModel = () => {
+    this.setState({ ...this.state, show: true });
+  };
+  handleClose = () => {
+    this.setState({ ...this.state, show: false });
+  };
+
+  handleChange = (e) => {
+    this.setState({
+      ...this.state,
+      newUser: {
+        ...this.state.newUser,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    // this.createUser();
+    console.log(this.state.newUser);
     axiosClient
       .post("/users", this.state.newUser)
       .then((response) => {
@@ -47,13 +81,6 @@ export default class Users extends Component {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  handleModel = () => {
-    this.setState({ ...this.state, show: true });
-  };
-  handleClose = () => {
-    this.setState({ ...this.state, show: false });
   };
 
   render() {
@@ -77,7 +104,15 @@ export default class Users extends Component {
             ))}
           </div>
         </div>
-        <Modal
+        <ModelComponent
+          show={this.state.show}
+          onHide={this.handleClose}
+          onchange={this.handleChange}
+          onsubmit={this.handleSubmit}
+          newUser={this.state.newUser}
+        />
+
+        {/* <Modal
           show={this.state.show}
           onHide={() => {
             this.handleClose();
@@ -244,7 +279,7 @@ export default class Users extends Component {
               ADD
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
       </>
     );
   }

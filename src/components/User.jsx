@@ -24,7 +24,6 @@ const User = ({ user, success }) => {
       });
   };
 
-
   const selectusers = (user) => {
     setname(user.name);
     setemail(user.email);
@@ -108,6 +107,7 @@ const User = ({ user, success }) => {
           </button>
         </div>
       </div>
+
       <Modal
         show={show}
         onHide={() => {
