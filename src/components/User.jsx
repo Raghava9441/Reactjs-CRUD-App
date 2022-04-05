@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
+import { axiosClient } from "../api";
 
 const User = ({ user, success }) => {
-  let subtitle;
   const [show, setShow] = useState(false);
 
   const [name, setname] = useState("");
@@ -12,17 +12,10 @@ const User = ({ user, success }) => {
   const [gender, setgender] = useState("");
   const [status, setstatus] = useState("");
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
+  //delete perticular user
   const deleteUser = async (id) => {
-    axios
-      .delete(`https://gorest.co.in/public/v2/users/${id}`, {
-        headers: {
-          Authorization:
-            "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-        },
-      })
+    axiosClient
+      .delete(`/users/${id}`, {})
       .then((response) => {
         success();
       })
@@ -31,37 +24,30 @@ const User = ({ user, success }) => {
       });
   };
 
+
   const selectusers = (user) => {
     setname(user.name);
     setemail(user.email);
     setgender(user.gender);
     setstatus(user.status);
   };
+
+  //update user details
   const updateuser = (e) => {
     e.preventDefault();
     // console.log(user.id, name, email, gender, status);
-    axios
-      .put(
-        `https://gorest.co.in/public/v2/users/${user.id}`,
-        { name, email, gender, status },
-        {
-          headers: {
-            Authorization:
-              "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-          },
-        }
-      )
+    axiosClient
+      .put(`/users/${user.id}`, { name, email, gender, status })
       .then((res) => {
         handleClose();
         success();
-
-        // console.log(user.id);
-        // console.log(name);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   return (
     <div className="card mb-3" style={{ width: "18rem", height: "16rem" }}>

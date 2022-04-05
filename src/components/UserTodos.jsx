@@ -1,68 +1,14 @@
-// import axios from "axios";
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-
-// const UserTodos = () => {
-//   const { id } = useParams();
-//   const [todos, settodos] = useState("");
-//   useEffect(() => {
-//     axios
-//       .get(`https://gorest.co.in/public/v2/users/${id}/todos`, {
-//         headers: {
-//           Authorization:
-//             "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-//         },
-//       })
-//       .then((response) => {
-//         settodos(response.data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   }, []);
-
-//   const addTodo = () => {};
-//   return (
-//     <div>
-//       <pre>{JSON.stringify(todos)}</pre>
-//       <div id="myDIV" className="header">
-//         <h2 style={{ margin: "5px" }}>User To Do List</h2>
-//         <input type="text" id="myInput" placeholder="Title..." />
-//         <span
-//           onClick={() => {
-//             addTodo();
-//           }}
-//           className="addBtn"
-//         >
-//           Add
-//         </span>
-//       </div>
-//       <div>
-//         <ul className="myUL">
-//           {todos.map((todo) => (
-//             <li key={todo.id}>
-//               <li>{todo.title}</li>
-//               <li>{todo.status}</li>
-//             </li>
-//           ))}
-//         </ul>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default UserTodos;
-
-import axios from "axios";
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { axiosClient } from "../api";
 class UserTodos extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      id: this.props.match.params.id,
       userTodos: [],
       newTodo: {
         due_on: new Date().toLocaleDateString("en-US"),
@@ -77,16 +23,8 @@ class UserTodos extends Component {
 
   getUserTodos = () => {
     console.log(this.state.newTodo);
-    axios
-      .get(
-        `https://gorest.co.in/public/v2/users/${this.props.match.params.id}/todos`,
-        {
-          headers: {
-            Authorization:
-              "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-          },
-        }
-      )
+    axiosClient
+      .get(`/users/${this.props.match.params.id}/todos`, {})
       .then((response) => {
         // console.log(response.data);
         this.setState({ userTodos: response.data });
@@ -95,23 +33,15 @@ class UserTodos extends Component {
         console.log(error);
       });
   };
+
   addTodo = (e) => {
     e.preventDefault();
     console.log(this.state.newTodo);
-
-    axios({
-      method: "post",
-      url: `https://gorest.co.in/public/v2/users/${this.state.id}/todos`,
-      data: JSON.stringify(this.state.newTodo),
-      headers: {
-        Authorization:
-          "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-        "Content-Type": "application/json",
-      },
-    })
+    axiosClient
+      .post(`/users/${this.state.id}/todos`, this.state.newTodo)
       .then((response) => {
         console.log(response.data);
-        this.getUserPosts();
+        this.getUserTodos();
 
         this.setState({ ...this.state, show: false });
       })

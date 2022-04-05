@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { axiosClient } from "../api";
 
 export default class Todos extends Component {
   constructor(props) {
@@ -10,8 +11,8 @@ export default class Todos extends Component {
     };
   }
   componentDidMount() {
-    axios
-      .get("https://gorest.co.in/public/v2/todos")
+    axiosClient
+      .get("/todos")
       .then((response) => {
         this.setState({ todos: response.data });
       })
@@ -26,7 +27,7 @@ export default class Todos extends Component {
       <div className="container">
         <div className="row">
           {this.state.todos.map((todo) => (
-            <div className="col-md-4">
+            <div className="col-md-4" key={todo.id}>
               <div className="card mb-5 d-flex" key={todo.id}>
                 <div
                   className="card-header"

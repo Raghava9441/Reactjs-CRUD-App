@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import User from "./User";
 import UserTodos from "./UserTodos";
 import { Button, Modal } from "react-bootstrap";
+import { axiosClient } from "../api";
 
 export default class Users extends Component {
   constructor(props) {
@@ -22,14 +23,10 @@ export default class Users extends Component {
   componentDidMount() {
     this.getUsers();
   }
+  // get all users
   getUsers = () => {
-    axios
-      .get("https://gorest.co.in/public/v2/users", {
-        headers: {
-          Authorization:
-            "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-        },
-      })
+    axiosClient
+      .get("/users")
       .then((response) => {
         this.setState({ users: response.data });
       })
@@ -38,28 +35,20 @@ export default class Users extends Component {
       });
   };
 
+  // add new user
   createUser = () => {
-    // console.log(this.state.newUser);
-    axios({
-      method: "post",
-      url: `https://gorest.co.in/public/v2/users`,
-      data: this.state.newUser,
-      headers: {
-        Authorization:
-          "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-        "Content-Type": "application/json",
-      },
-    })
+    axiosClient
+      .post("/users", this.state.newUser)
       .then((response) => {
         console.log(response.data);
         this.getUsers();
-
         this.setState({ ...this.state, show: false });
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
   handleModel = () => {
     this.setState({ ...this.state, show: true });
   };
