@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { axiosClient } from "../api";
 import Comment from "./Comment";
 
 export default class Comments extends Component {
@@ -19,16 +20,18 @@ export default class Comments extends Component {
     this.getComments();
   }
   getComments = () => {
-    axios
-      .get(
-        `https://gorest.co.in/public/v2/posts/${this.props.post.id}/comments`,
-        {
-          headers: {
-            Authorization:
-              "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-          },
-        }
-      )
+    axiosClient
+      .get(`/posts/${this.props.post.id}/comments`)
+      // axios
+      //   .get(
+      //     `https://gorest.co.in/public/v2/posts/${this.props.post.id}/comments`,
+      //     {
+      //       headers: {
+      //         Authorization:
+      //           "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
+      //       },
+      //     }
+      //   )
       .then((response) => {
         // console.log(response.data);
         this.setState({ ...this.state, comments: response.data });
@@ -39,26 +42,25 @@ export default class Comments extends Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(
-        `https://gorest.co.in/public/v2/posts/${this.props.post.id}/comments`,
-        { ...this.state.newComment },
-        {
-          headers: {
-            Authorization:
-              "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-          },
-        }
-      )
+    axiosClient
+      .post(`/posts/${this.props.post.id}/comments`, this.state.newComment)
       .then((res) => {
-        // success();
-        // console.log(user.id);
+        this.setState({
+          ...this.state,
+          newComment: {
+            body: "",
+            email: "",
+            name: "",
+          },
+        });
+        this.getComments();
+
         console.log(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-      this.getComments()
+    this.getComments();
   };
   render() {
     return (

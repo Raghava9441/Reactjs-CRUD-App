@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import User from "./User";
 import { axiosClient } from "../api";
 import ModelComponent from "./ModelComponent";
+import SearchField from "./SearchField";
 
 export default class Users extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ export default class Users extends Component {
 
     this.state = {
       users: [],
+      searchField: "",
       newUser: {
         id: "",
         name: "",
@@ -32,20 +34,6 @@ export default class Users extends Component {
         console.log(error);
       });
   };
-
-  // add new user
-  // createUser = () => {
-  //   axiosClient
-  //     .post("/users", this.state.newUser)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       this.getUsers();
-  //       this.setState({ ...this.state, show: false });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
 
   handleModel = () => {
     this.setState({ ...this.state, show: true });
@@ -79,8 +67,17 @@ export default class Users extends Component {
         console.log(error);
       });
   };
+  onSearchChange = (e) => {
+    this.setState({
+      searchField: e.target.value,
+    });
+  };
 
   render() {
+    const { users, searchField } = this.state;
+    const filteredMonsters = users.filter((searchUser) =>
+      searchUser.name.toLowerCase().includes(searchField.toLowerCase())
+    );
     return (
       <>
         <div className="container">
@@ -90,8 +87,12 @@ export default class Users extends Component {
           >
             Create user
           </button>
+          <SearchField
+            placeholder="search user By anme"
+            onsearch={this.onSearchChange}
+          />
           <div className="row ">
-            {this.state.users.map((user) => (
+            {filteredMonsters.map((user) => (
               <div
                 className="col-md-4 col-xs-1 d-flex justify-content-center"
                 key={user.id}
