@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router";
 import { Button, Modal } from "react-bootstrap";
 import Post from "./Post";
+import { axiosClient } from "../api";
 
 class UserPosts extends Component {
   constructor(props) {
@@ -24,29 +25,11 @@ class UserPosts extends Component {
   componentDidMount() {
     //user posts
     this.getUserPosts();
-
-    //get the user comments
-
-    //user todos
-    axios
-      .get(`https://gorest.co.in/public/v2/users/${this.state.id}/todos`)
-      .then((response) => {
-        // console.log(response.data);
-        this.setState({ ...this.state, todos: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 
   getUserPosts = () => {
-    axios
-      .get(`https://gorest.co.in/public/v2/users/${this.state.id}/posts`, {
-        headers: {
-          Authorization:
-            "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-        },
-      })
+    axiosClient
+      .get(`/users/${this.state.id}/posts`)
       .then((response) => {
         // console.log(response.data);
         this.setState({ ...this.state, posts: response.data });
@@ -55,6 +38,7 @@ class UserPosts extends Component {
         console.log(error);
       });
   };
+
   handleModel = () => {
     this.setState({ ...this.state, show: true });
   };

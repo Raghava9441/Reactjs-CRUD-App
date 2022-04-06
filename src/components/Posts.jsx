@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { Component } from "react";
-import { Button, Modal } from "react-bootstrap";
 
 export default class Posts extends Component {
   constructor(props) {
@@ -24,51 +23,46 @@ export default class Posts extends Component {
       });
   }
 
-  addPost = () => {
-    console.log(this.state.newPost);
-    axios({
-      method: "post",
-      url: `https://gorest.co.in/public/v2/posts`,
-      data: this.state.newPost,
-      headers: {
-        Authorization:
-          "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        console.log(response.data);
-        this.componentDidMount();
-        this.setState({ ...this.state, show: false });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  handleModel = () => {
-    this.setState({ ...this.state, show: true });
-  };
-  handleClose = () => {
-    this.setState({ ...this.state, show: false });
-  };
+  // addPost = () => {
+  //   console.log(this.state.newPost);
+  //   // axios({
+  //   //   method: "post",
+  //   //   url: `https://gorest.co.in/public/v2/posts`,
+  //   //   data: this.state.newPost,
+  //   //   headers: {
+  //   //     Authorization:
+  //   //       "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
+  //   //     "Content-Type": "application/json",
+  //   //   },
+  //   // })
+  //   axiosClient
+  //     .post("/posts", this.state.newPost)
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       this.componentDidMount();
+  //       this.setState({ ...this.state, show: false });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+  // handleModel = () => {
+  //   this.setState({ ...this.state, show: true });
+  // };
+  // handleClose = () => {
+  //   this.setState({ ...this.state, show: false });
+  // };
 
   render() {
     return (
       <div>
         <div className="container">
-          <h2 className="mt-3 mb-5">All Posts</h2>
-          <button
-            className="btn btn-sm btn-primary mb-3"
-            onClick={() => {
-              this.handleModel();
-            }}
-          >
-            add post
-          </button>
+          <h2 className="mt-3 md-3">All Posts</h2>
+
           <div className="row">
             {this.state.allPosts.map((post) => (
-              <div className="col-md-3" key={post.id}>
-                <div className="card">
+              <div className="col-md-4 mb-3" key={post.id}>
+                <div className="card" style={{ height: "26rem" }}>
                   <div className="card-body mb-3">
                     <h3>{post.title}</h3>
                     <p>{post.body}</p>
@@ -78,7 +72,7 @@ export default class Posts extends Component {
             ))}
           </div>
         </div>
-        <Modal
+        {/* <Modal
           show={this.state.show}
           onHide={() => {
             this.handleClose();
@@ -143,7 +137,7 @@ export default class Posts extends Component {
               ADD
             </Button>
           </Modal.Footer>
-        </Modal>
+        </Modal> */}
       </div>
     );
   }

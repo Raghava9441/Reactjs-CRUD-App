@@ -1,9 +1,5 @@
-import axios from "axios";
-
 import React, { Component } from "react";
 import User from "./User";
-import UserTodos from "./UserTodos";
-import { Button, Modal } from "react-bootstrap";
 import { axiosClient } from "../api";
 import ModelComponent from "./ModelComponent";
 
@@ -14,6 +10,7 @@ export default class Users extends Component {
     this.state = {
       users: [],
       newUser: {
+        id: "",
         name: "",
         email: "",
         gender: "",
@@ -96,7 +93,7 @@ export default class Users extends Component {
           <div className="row ">
             {this.state.users.map((user) => (
               <div
-                className="col-md-4 d-flex justify-content-center"
+                className="col-md-4 col-xs-1 d-flex justify-content-center"
                 key={user.id}
               >
                 <User user={user} success={this.getUsers} />

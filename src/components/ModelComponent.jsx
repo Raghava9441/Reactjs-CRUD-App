@@ -16,7 +16,9 @@ export class ModelComponent extends Component {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add user</Modal.Title>
+          <Modal.Title>
+            {this.props.newUser.id === "" ? "Create User" : "Edit User"}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <pre>{JSON.stringify(this.props.newUser)}</pre>
@@ -41,8 +43,9 @@ export class ModelComponent extends Component {
                 rows="3"
                 name="email"
                 value={this.props.newUser.email}
-                placeholder="Enter body"
+                placeholder="Enter Email"
                 onChange={this.props.onchange}
+                disabled={this.props.newUser.id !== ""}
               ></input>
             </div>
             status
@@ -55,6 +58,7 @@ export class ModelComponent extends Component {
                   value="male"
                   id="flexRadioDefault1"
                   onChange={this.props.onchange}
+                  defaultChecked={this.props.newUser.gender === "male"}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                   Male
@@ -68,6 +72,7 @@ export class ModelComponent extends Component {
                   value="female"
                   id="flexRadioDefault1"
                   onChange={this.props.onchange}
+                  defaultChecked={this.props.newUser.gender === "female"}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                   female
@@ -84,6 +89,7 @@ export class ModelComponent extends Component {
                   value="active"
                   id="flexRadioDefault1"
                   onChange={this.props.onchange}
+                  defaultChecked={this.props.newUser.status === "active"}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                   active
@@ -97,6 +103,7 @@ export class ModelComponent extends Component {
                   value="inactive"
                   id="flexRadioDefault1"
                   onChange={this.props.onchange}
+                  defaultChecked={this.props.newUser.status === "inactive"}
                 />
                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                   inactive
@@ -110,7 +117,7 @@ export class ModelComponent extends Component {
             Close
           </Button>
           <Button variant="primary" onClick={this.props.onsubmit}>
-            ADD
+            {this.props.newUser.id === "" ? "Add User" : "Edit User"}
           </Button>
         </Modal.Footer>
       </Modal>
