@@ -12,7 +12,7 @@ export default class Post extends Component {
     // console.log("comments" + this.state.comments);
     return (
       <>
-        <div className="col-md-6">
+        <div className="col-md-6 mb-3">
           <div className="card">
             <div className="card-body">
               <h3>{this.props.post.id}</h3>
