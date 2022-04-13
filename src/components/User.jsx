@@ -18,9 +18,11 @@ export default class User extends Component {
             },
         };
     }
+    //open model
     handleModel = () => {
         this.setState({ ...this.state, show: true });
     };
+    //close model
     handleClose = () => {
         this.setState({ ...this.state, show: false });
     };

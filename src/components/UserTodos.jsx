@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { axiosClient } from "../api";
 class UserTodos extends Component {
@@ -132,23 +131,6 @@ class UserTodos extends Component {
                                     </label>
                                 </div>
                             </div>
-                            {/* <div className="form-group d-flex">
-                <label htmlFor="date" style={{ marginRight: "25px" }}>
-                  {" "}
-                  <h4>Date</h4>{" "}
-                </label>
-                <DatePicker
-                  selected={this.state.newTodo.date}
-                  onChange={(e) => {
-                    this.setState({
-                      ...this.state,
-                      newTodo: { ...this.state.newTodo, date: e.target.value },
-                    });
-                  }}
-                  showTimeSelect
-                  dateFormat="Pp"
-                />
-              </div> */}
                         </div>
                         <button
                             className="btn btn-primary btn-sm"

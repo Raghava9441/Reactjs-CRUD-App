@@ -7,7 +7,7 @@ export default class Post extends Component {
 
     this.state = {};
   }
-  componentDidMount() {}
+  // componentDidMount() {}
   render() {
     // console.log("comments" + this.state.comments);
     return (

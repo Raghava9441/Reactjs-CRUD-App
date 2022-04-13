@@ -9,9 +9,9 @@ export default class Users extends Component {
         super(props);
         this.state = {
             users: [],
+            filteredUsers: [],
             option: null,
             searchField: "",
-            filteredUsers: [],
             newUser: {
                 id: "",
                 name: "",
@@ -56,7 +56,7 @@ export default class Users extends Component {
             },
         });
     };
-
+    //create new user
     handleSubmit = (e) => {
         e.preventDefault();
         // this.createUser();
@@ -67,17 +67,27 @@ export default class Users extends Component {
                 console.log(response.data);
                 this.getUsers();
                 this.setState({ ...this.state, show: false });
+                this.setState({
+                    ...this.state,
+                    newUser: {
+                        id: "",
+                        name: "",
+                        email: "",
+                        gender: "",
+                        status: "",
+                    },
+                });
             })
             .catch((error) => {
                 console.log(error);
             });
     };
-
+    //filter users based on gender
     handleGender = (e) => {
-        this.setState({
-            ...this.state,
-            option: e.target.value,
-        });
+        // this.setState({
+        //     ...this.state,
+        //     option: e.target.value,
+        // });
         switch (e.target.value) {
             case "male":
                 let maleUsers = this.state.users.filter(
@@ -106,17 +116,18 @@ export default class Users extends Component {
                 return;
         }
     };
-
+    //filter users based on name
     onSearchChange = (e) => {
         this.setState({
+            ...this.state,
             searchField: e.target.value,
         });
     };
 
     render() {
-        const { users, searchField, filteredUsers } = this.state;
-        const filteredMonsters = filteredUsers.filter((searchUser) =>
-            searchUser.name.toLowerCase().includes(searchField.toLowerCase())
+        const { searchField, filteredUsers } = this.state;
+        const filteredMonsters = filteredUsers.filter((filteredUser) =>
+            filteredUser.name.toLowerCase().includes(searchField.toLowerCase())
         );
 
         return (
@@ -149,7 +160,7 @@ export default class Users extends Component {
                             <label
                                 className="form-check-label"
                                 htmlFor="flexRadioDefault3"
-                                style={{ marginRight: "20px" }}
+                                style={{ marginLeft: "5px" }}
                             >
                                 all
                             </label>
@@ -162,6 +173,7 @@ export default class Users extends Component {
                                 value="male"
                                 id="flexRadioDefault1"
                                 onChange={this.handleGender}
+                                style={{ marginLeft: "5px" }}
                             />
                             <label
                                 className="form-check-label"
@@ -198,7 +210,7 @@ export default class Users extends Component {
                     <div className="row">
                         <h3>
                             {" "}
-                            {this.state.option}users Count:
+                            {this.state.option}Users Count:
                             {filteredMonsters.length}
                         </h3>
                     </div>

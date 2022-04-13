@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { Component } from "react";
 import { axiosClient } from "../api";
 import Comment from "./Comment";
@@ -22,16 +21,6 @@ export default class Comments extends Component {
   getComments = () => {
     axiosClient
       .get(`/posts/${this.props.post.id}/comments`)
-      // axios
-      //   .get(
-      //     `https://gorest.co.in/public/v2/posts/${this.props.post.id}/comments`,
-      //     {
-      //       headers: {
-      //         Authorization:
-      //           "Bearer 43157fce0d07e7f20855dde25fbb772a6078687c40c3d2734da25e50d18dd1d3",
-      //       },
-      //     }
-      //   )
       .then((response) => {
         // console.log(response.data);
         this.setState({ ...this.state, comments: response.data });
