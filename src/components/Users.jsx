@@ -3,6 +3,7 @@ import User from "./User";
 import { axiosClient } from "../api";
 import ModelComponent from "./ModelComponent";
 import SearchField from "./SearchField";
+import { addUsersFromAPI, getUsers } from "../db/db";
 
 export default class Users extends Component {
     constructor(props) {
@@ -23,17 +24,37 @@ export default class Users extends Component {
     }
 
     componentDidMount() {
-        this.getUsers();
+        this.fetchUsers();
     }
-    // get all users
-    getUsers = () => {
+
+    fetchUsers = async () => {
+        const storedUsers = await getUsers();
+        console.log(storedUsers);
+        this.setState({
+            users: storedUsers,
+            filteredUsers: storedUsers,
+        });
+
+        this.syncUsersWithAPI(storedUsers);
+    };
+
+    syncUsersWithAPI = (storedUsers) => {
         axiosClient
             .get("/users")
             .then((response) => {
-                this.setState({
-                    users: response.data,
-                    filteredUsers: response.data,
-                });
+                const apiUsers = response.data;
+                const newUsers = apiUsers.filter(apiUser =>
+                    !storedUsers.some(storedUser => storedUser.id === apiUser.id)
+                );
+
+                if (newUsers.length > 0) {
+                    const updatedUsers = [...storedUsers, ...newUsers];
+                    this.setState({
+                        users: updatedUsers,
+                        filteredUsers: updatedUsers,
+                    });
+                    addUsersFromAPI(updatedUsers);
+                }
             })
             .catch((error) => {
                 console.log(error);
